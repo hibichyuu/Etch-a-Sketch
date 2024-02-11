@@ -4,19 +4,23 @@ const restartBtn = document.querySelector("#restartButton");
 restartBtn.addEventListener("click", ()=>{restartGrid();});
 
 const colorSelect = document.querySelector("#colorSelect");
-colorSelect.addEventListener("change",()=>{changeColor(colorSelect.value)});
+colorSelect.addEventListener("change",()=>{changeColor(colorSelect.value); ifSpray = false;});
 
 const eraserBtn = document.querySelector("#eraser");
-eraserBtn.addEventListener('click', ()=>{pixelColor = "white";});
+eraserBtn.addEventListener('click', ()=>{pixelColor = "white"; ifSpray = false;});
 
 const penBtn = document.querySelector("#pen");
-penBtn.addEventListener('click', ()=>{changeColor(colorSelect.value);});
+penBtn.addEventListener('click', ()=>{changeColor(colorSelect.value); ifSpray = false;});
 
 const gridSelect = document.querySelector("#gridSelect");
 gridSelect.addEventListener("change", ()=>{changeGridLength(parseInt(gridSelect.value));});
 
+const sprayBtn = document.querySelector("#spray");
+sprayBtn.addEventListener('click', ()=>{ifSpray = true;});
+
 let gridLength = 16;
 let pixelColor = "black";
+let ifSpray = false;
 
 createPixels();
 
@@ -38,7 +42,12 @@ function createPixels(){
 
 function addPixelListeners(pixel){
     pixel.addEventListener("mouseover", ()=>{
-        pixel.style.backgroundColor = pixelColor;
+        if(colorSelect.value == "random" && pixelColor == "random"){
+            pixel.style.backgroundColor = `rgb(${randomRGBValue()},${randomRGBValue()},${randomRGBValue()})`;
+        }
+        else{
+            pixel.style.backgroundColor = pixelColor;
+        }
     });
 }
 
@@ -55,4 +64,8 @@ function changeColor(color){
 
 function changeGridLength(length){
     gridLength = length;
+}
+
+function randomRGBValue(){
+    return Math.floor(Math.random() * 255);
 }
